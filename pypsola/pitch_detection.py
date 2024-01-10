@@ -1,5 +1,3 @@
-from typing import Callable
-
 import numpy as np
 
 
@@ -17,17 +15,16 @@ def auto_correlate_pitch_period(audio_chunk: np.array, sample_rate, min_frequenc
     return np.argmax(corr_half[min_lag:max_lag]) + min_lag
 
 
-def correlate_pitch_marks(audio_chunk: np.array,
-                          frame_length,
-                          pitch_period_detector: Callable[[np.array], int]
-                          ) -> np.array:
+def auto_correlate_pitch_marks(
+        audio_chunk: np.array, frame_length, sample_rate, min_frequency=80, max_frequency=1000
+) -> np.array:
     pitch_marks = []
     index = 0
     while index < len(audio_chunk):
         frame_end = min(index + frame_length, len(audio_chunk))
         frame = audio_chunk[index:frame_end]
 
-        period = pitch_period_detector(frame)
+        period = auto_correlate_pitch_period(frame, sample_rate, min_frequency, max_frequency)
         if period:
             pitch_marks.append(index)
             index += period  # Move to the next period
