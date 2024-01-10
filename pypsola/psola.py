@@ -2,7 +2,7 @@ from functools import partial
 
 import numpy as np
 
-from pypsola import auto_correlate_pitch_period, correlate_pitch_marks
+from .pitch_detection import auto_correlate_pitch_period, auto_correlate_pitch_marks
 
 
 def prep_marks(pitch_marks, chunk_size):
@@ -76,5 +76,5 @@ def shift_pitch(audio_chunk: np.array,
                              sample_rate=sample_rate,
                              min_frequency=min_frequency,
                              max_frequency=max_frequency)
-    pitch_marks = correlate_pitch_marks(audio_chunk, frame_length, pitch_detector)
+    pitch_marks = auto_correlate_pitch_marks(audio_chunk, frame_length, pitch_detector)
     return psola_pitch_shift(audio_chunk, pitch_marks, shift_factor)
