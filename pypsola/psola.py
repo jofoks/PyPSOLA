@@ -21,7 +21,6 @@ def get_output_slice(index: float, frame_length: int, output: np.array):
     out_start = max(out_start, 0)
     output_segment_length = min(out_end, len(output)) - out_start
 
-    # Fix rounding artifacts
     if output_segment_length == frame_length + 1:
         out_end -= 1
     elif output_segment_length == frame_length - 1:
@@ -42,7 +41,6 @@ def psola_pitch_shift(audio_chunk: np.array, pitch_marks: np.array, pitch_shift:
         frame_end = min(pitch_mark + period, len(audio_chunk))
         frame = audio_chunk[frame_start:frame_end]
 
-        # Trim first frame to fit if too large
         if (pitch_mark - len(frame) // 2) < 0:
             frame = frame[:(pitch_mark - round(len(frame) / 2)) + len(frame)]
 
